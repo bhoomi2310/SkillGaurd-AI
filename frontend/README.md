@@ -1,4 +1,4 @@
-# SkillBridge AI - Frontend
+# WorkMark - Frontend
 
 ## Quick Start
 

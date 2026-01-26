@@ -1,6 +1,6 @@
-# SkillBridge AI - AI-Powered Micro-Internship Platform
+# WorkMark - AI-Powered Skill Verification Platform
 
-A production-ready MERN stack application for Microsoft Imagine Cup 2026 that enables companies/NGOs to post micro-tasks, students to submit real work, and AI-powered skill verification using Azure OpenAI.
+A production-ready MERN stack application that enables companies/NGOs to post micro-tasks, students to submit real work, and AI-powered skill verification using Azure OpenAI.
 
 ## 🎯 Features
 
@@ -41,7 +41,7 @@ A production-ready MERN stack application for Microsoft Imagine Cup 2026 that en
 
 ```bash
 git clone <repository-url>
-cd "SkillGaurd AI"
+cd SkillGaurd-AI
 ```
 
 ### 2. Backend Setup
@@ -59,9 +59,12 @@ PORT=5000
 NODE_ENV=development
 
 # MongoDB
-MONGODB_URI=mongodb://localhost:27017/skillbridge-ai
+MONGODB_URI=mongodb://localhost:27017/workmark
 # Or use MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/skillbridge-ai
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/workmark
+
+# Google OAuth (for Google Sign-In)
+GOOGLE_CLIENT_ID=your-google-client-id
 
 # JWT
 JWT_SECRET=your-super-secret-jwt-key-change-in-production
@@ -100,6 +103,7 @@ Create a `.env` file in the `frontend` directory (optional):
 
 ```env
 VITE_API_URL=http://localhost:5000/api
+VITE_GOOGLE_CLIENT_ID=your-google-client-id
 ```
 
 ### 4. Start MongoDB
@@ -131,10 +135,26 @@ npm run dev
 
 The frontend will start on `http://localhost:3000`
 
+### 6. Seed Demo Users (Optional)
+
+To create demo accounts for testing:
+
+```bash
+cd backend
+npm run seed:demo
+```
+
+This will create three demo accounts:
+- **Student**: `student@demo.com` / `demo123`
+- **Provider**: `provider@demo.com` / `demo123`
+- **Recruiter**: `recruiter@demo.com` / `demo123`
+
+These credentials are also displayed on the login page for easy access.
+
 ## 📁 Project Structure
 
 ```
-SkillBridge AI/
+WorkMark/
 ├── backend/
 │   ├── config/
 │   │   └── database.js          # MongoDB connection

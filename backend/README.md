@@ -1,4 +1,4 @@
-# SkillBridge AI - Backend
+# WorkMark - Backend
 
 ## Quick Start
 
@@ -12,8 +12,9 @@
 ### Authentication
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login
+- `POST /api/auth/google` - Google OAuth authentication
 - `GET /api/auth/me` - Get current user
-- `PUT /api/auth/profile` - Update profile
+- `PUT /api/auth/profile` - Update profile (includes onboarding completion)
 
 ### Tasks
 - `GET /api/tasks` - Get all tasks (with filters)

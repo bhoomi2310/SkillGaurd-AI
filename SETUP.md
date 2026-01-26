@@ -25,7 +25,8 @@ Create `backend/.env`:
 ```env
 PORT=5000
 NODE_ENV=development
-MONGODB_URI=mongodb://localhost:27017/skillbridge-ai
+MONGODB_URI=mongodb://localhost:27017/workmark
+GOOGLE_CLIENT_ID=your-google-client-id
 JWT_SECRET=change-this-to-a-random-secret-key
 JWT_EXPIRE=7d
 AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
@@ -46,6 +47,7 @@ Create `frontend/.env` (optional):
 
 ```env
 VITE_API_URL=http://localhost:5000/api
+VITE_GOOGLE_CLIENT_ID=your-google-client-id
 ```
 
 ### 3. Start Services

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import Logo from '../components/Logo';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,8 +13,40 @@ const Register = () => {
     role: 'student',
   });
   const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const { register, googleLogin } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Load Google Identity Services
+    if (import.meta.env.VITE_GOOGLE_CLIENT_ID && !window.google) {
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+
+      script.onload = () => {
+        if (window.google) {
+          window.google.accounts.id.initialize({
+            client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+            callback: handleGoogleCallback,
+          });
+
+          // Render button
+          const buttonDiv = document.getElementById('google-signup-button');
+          if (buttonDiv && window.google.accounts.id) {
+            window.google.accounts.id.renderButton(buttonDiv, {
+              theme: 'outline',
+              size: 'large',
+              width: '100%',
+              text: 'signup_with',
+            });
+          }
+        }
+      };
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,14 +63,14 @@ const Register = () => {
     setLoading(true);
 
     try {
-      await register({
+      const response = await register({
         name: formData.name,
         email: formData.email,
         password: formData.password,
         role: formData.role,
       });
       toast.success('Registration successful!');
-      navigate('/dashboard');
+      navigate('/onboarding');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Registration failed');
     } finally {
@@ -45,20 +78,37 @@ const Register = () => {
     }
   };
 
+  const handleGoogleCallback = async (response) => {
+    setGoogleLoading(true);
+    try {
+      const result = await googleLogin(response.credential, formData.role);
+      toast.success('Registration successful!');
+      navigate('/onboarding');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Google sign up failed');
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-dark-bg py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-dark-bg py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+      </div>
+
+      <div className="max-w-md w-full space-y-8 relative z-10">
         <div className="text-center">
-          <div className="flex justify-center mb-4">
-            <div className="w-12 h-12 bg-primary-600 rounded flex items-center justify-center">
-              <span className="text-white font-bold text-xl">&lt;/&gt;</span>
-            </div>
+          <div className="flex justify-center mb-6">
+            <Logo className="w-16 h-16" />
           </div>
-          <h2 className="text-3xl font-extrabold text-white">
+          <h2 className="text-4xl font-extrabold text-white mb-2">
             Create your account
           </h2>
-          <p className="mt-2 text-sm text-dark-text-secondary">
-            Join SkillBridge AI and start proving your skills
+          <p className="text-dark-text-secondary">
+            Join WorkMark and start proving your skills
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -146,6 +196,25 @@ const Register = () => {
             >
               {loading ? 'Creating account...' : 'Register'}
             </button>
+          </div>
+
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-dark-border"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-dark-bg text-dark-text-secondary">Or continue with</span>
+            </div>
+          </div>
+
+          <div>
+            {import.meta.env.VITE_GOOGLE_CLIENT_ID ? (
+              <div id="google-signup-button" className="w-full"></div>
+            ) : (
+              <p className="text-xs text-dark-text-secondary text-center">
+                Google Sign-In not configured. Set VITE_GOOGLE_CLIENT_ID in .env
+              </p>
+            )}
           </div>
 
           <div className="text-center">

@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
       const userData = await authService.getMe();
       setUser(userData);
     } catch (error) {
+      console.error('Failed to fetch user:', error);
       localStorage.removeItem('token');
       setUser(null);
     } finally {
@@ -38,17 +39,39 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    const response = await authService.login(email, password);
-    localStorage.setItem('token', response.token);
-    setUser(response);
-    return response;
+    try {
+      const response = await authService.login(email, password);
+      localStorage.setItem('token', response.token);
+      setUser(response);
+      return response;
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
   };
 
   const register = async (userData) => {
-    const response = await authService.register(userData);
-    localStorage.setItem('token', response.token);
-    setUser(response);
-    return response;
+    try {
+      const response = await authService.register(userData);
+      localStorage.setItem('token', response.token);
+      setUser(response);
+      return response;
+    } catch (error) {
+      console.error('Register error:', error);
+      throw error;
+    }
+  };
+
+  const googleLogin = async (token, role) => {
+    try {
+      const response = await authService.googleAuth(token, role);
+      localStorage.setItem('token', response.token);
+      setUser(response);
+      return response;
+    } catch (error) {
+      console.error('Google login error:', error);
+      throw error;
+    }
   };
 
   const logout = () => {
@@ -60,6 +83,7 @@ export const AuthProvider = ({ children }) => {
     user,
     login,
     register,
+    googleLogin,
     logout,
     loading,
     fetchUser,

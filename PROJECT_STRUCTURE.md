@@ -1,9 +1,9 @@
-fm# SkillBridge AI - Project Structure
+# WorkMark - Project Structure
 
 ## Complete File Tree
 
 ```
-SkillBridge AI/
+WorkMark/
 │
 ├── README.md                    # Main documentation
 ├── SETUP.md                     # Quick setup guide
@@ -204,10 +204,12 @@ SkillBridge AI/
 - `AZURE_OPENAI_ENDPOINT` - Azure OpenAI endpoint
 - `AZURE_OPENAI_API_KEY` - Azure OpenAI API key
 - `AZURE_OPENAI_DEPLOYMENT_NAME` - Model deployment name
+- `GOOGLE_CLIENT_ID` - Google OAuth Client ID
 - `GITHUB_TOKEN` - (Optional) GitHub token
 
 ### Frontend (.env)
 - `VITE_API_URL` - Backend API URL
+- `VITE_GOOGLE_CLIENT_ID` - Google OAuth Client ID
 
 ## Database Collections
 
@@ -220,6 +222,8 @@ SkillBridge AI/
 
 ✅ Multi-role authentication (Student/Provider/Recruiter)
 ✅ JWT-based secure authentication
+✅ Google OAuth authentication
+✅ User onboarding flow
 ✅ Task marketplace with filtering
 ✅ GitHub repository integration
 ✅ File upload support (metadata)

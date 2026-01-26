@@ -24,14 +24,35 @@ api.interceptors.request.use(
   }
 );
 
-// Handle 401 errors
+// Handle errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Network error
+    if (!error.response) {
+      console.error('Network error:', error.message);
+      return Promise.reject(new Error('Unable to connect to server. Please check if the backend is running.'));
+    }
+
+    // 401 Unauthorized
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      // Only redirect if not already on login/register page
+      if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register')) {
+        window.location.href = '/login';
+      }
     }
+
+    // Log error in development
+    if (import.meta.env.DEV) {
+      console.error('API Error:', {
+        url: error.config?.url,
+        method: error.config?.method,
+        status: error.response?.status,
+        message: error.response?.data?.message || error.message,
+      });
+    }
+
     return Promise.reject(error);
   }
 );
@@ -42,9 +63,11 @@ export const authService = {
     api.post('/auth/login', { email, password }).then((res) => res.data),
   register: (userData) =>
     api.post('/auth/register', userData).then((res) => res.data),
+  googleAuth: (token, role) =>
+    api.post('/auth/google', { token, role }).then((res) => res.data),
   getMe: () => api.get('/auth/me').then((res) => res.data),
-  updateProfile: (profile) =>
-    api.put('/auth/profile', { profile }).then((res) => res.data),
+  updateProfile: (profile, onboardingCompleted) =>
+    api.put('/auth/profile', { profile, onboardingCompleted }).then((res) => res.data),
 };
 
 // Task Service

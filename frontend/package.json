@@ -1,7 +1,7 @@
 {
-  "name": "skillbridge-ai-frontend",
+  "name": "workmark-frontend",
   "version": "1.0.0",
-  "description": "Frontend for SkillBridge AI - AI-powered micro-internship platform",
+  "description": "Frontend for WorkMark - AI-powered skill verification platform",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,12 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.6.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.20.1",
-    "axios": "^1.6.2",
-    "recharts": "^2.10.3",
-    "react-hot-toast": "^2.4.1"
+    "recharts": "^2.10.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
@@ -23,7 +23,6 @@
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",
     "tailwindcss": "^3.3.6",
-    "vite": "^5.0.8"
+    "vite": "^7.3.1"
   }
 }
-

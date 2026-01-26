@@ -5,8 +5,10 @@ import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
 
 // Pages
+import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Onboarding from './pages/Onboarding';
 import StudentDashboard from './pages/StudentDashboard';
 import TaskMarketplace from './pages/TaskMarketplace';
 import TaskDetail from './pages/TaskDetail';
@@ -23,8 +25,19 @@ function App() {
       <div className="min-h-screen bg-dark-bg">
         <Navbar />
         <Routes>
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          
+          {/* Onboarding */}
+          <Route
+            path="/onboarding"
+            element={
+              <PrivateRoute requireOnboarding={false}>
+                <Onboarding />
+              </PrivateRoute>
+            }
+          />
           
           {/* Student Routes */}
           <Route
@@ -104,7 +117,6 @@ function App() {
             }
           />
 
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Routes>
         <Toaster position="top-right" />
       </div>

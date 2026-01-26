@@ -5,6 +5,7 @@ import {
   login,
   getMe,
   updateProfile,
+  googleAuth,
 } from '../controllers/authController.js';
 import { protect } from '../middleware/auth.js';
 
@@ -29,6 +30,7 @@ const loginValidation = [
 
 router.post('/register', registerValidation, register);
 router.post('/login', loginValidation, login);
+router.post('/google', googleAuth);
 router.get('/me', protect, getMe);
 router.put('/profile', protect, updateProfile);
 
